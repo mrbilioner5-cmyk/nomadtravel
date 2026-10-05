@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NomadTrip — Путешествия по Кыргызстану</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2ef;
+            color: #183b2a;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .site {
+            width: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            background: #f8f6ef;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.08);
+        }
+
+        /* HEADER */
+
+        header {
+            height: 55px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            color: #197346;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .choose {
+            background: #20764a;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .choose:hover {
+            background: #155d38;
+            transform: translateY(-1px);
+        }
+
+        .choose:active {
+            transform: scale(0.96);
+        }
+
+        .menu {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            color: #345345;
+        }
+
+        /* MENU */
+
+        .menu-panel {
+            display: none;
+            position: fixed;
+            top: 55px;
+            right: calc(50% - 205px);
+            width: 190px;
+            background: white;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 99;
+            overflow: hidden;
+        }
+
+        .menu-panel.active {
+            display: block;
+        }
+
+        .menu-panel a {
+            display: block;
+            color: #183b2a;
+            text-decoration: none;
+            padding: 14px 18px;
+            font-size: 13px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-panel a:hover {
+            background: #eef6f1;
+        }
+
+        /* HERO */
+
+        .hero {
+            position: relative;
+            height: 330px;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.1),
+                rgba(0,0,0,0.75)
+            );
+        }
+
+        .hero-content {
+            position: absolute;
+            z-index: 2;
+            left: 18px;
+            right: 18px;
+            bottom: 22px;
+        }
+
+        .hero-small {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .hero h1 {
+            font-size: 27px;
+            line-height: 1.05;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 12px;
+            line-height: 1.4;
+            max-width: 300px;
+            margin-bottom: 14px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: #25784b;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .hero-button:hover {
+            background: #1b5f3a;
+            transform: translateY(-2px);
+        }
+
+        /* SECTIONS */
+
+        .section {
+            padding: 18px 12px;
+        }
+
+        .section-title {
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #758077;
+            font-size: 11px;
+            margin-top: -6px;
+            margin-bottom: 14px;
+        }
+
+        /* TRIPS */
+
+        .trip {
+            background: white;
+            border-radius: 10px;
+            padding: 7px;
+            display: flex;
+            gap: 9px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .trip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .trip img {
+            width: 85px;
+            height: 63px;
+            object-fit: cover;
+            border-radius: 7px;
+        }
+
+        .trip-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .trip-info h3 {
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .trip-info p {
+            font-size: 9px;
+            color: #7b837e;
+            line-height: 1.25;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            font-size: 10px;
+            color: #28754b;
+            font-weight: bold;
+        }
+
+        .trip-arrow {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #e9f1ec;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            font-size: 14px;
+            color: #23734a;
+        }
+
+        /* ADVANTAGES */
+
+        .advantages {
+            padding: 5px 12px 18px;
+        }
+
+        .advantage {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .advantage-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            background: #e7eee9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .advantage h3 {
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .advantage p {
+            color: #89918b;
+            font-size: 9px;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            margin-top: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 11px 5px;
+            border-right: 1px solid #eee;
+        }
+
+        .stat:last-child {
+            border: none;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 16px;
+            color: #183b2a;
+        }
+
+        .stat span {
+            font-size: 8px;
+            color: #8a918d;
+        }
+
+        .stars {
+            color: #e9ad24 !important;
+            font-size: 10px !important;
+        }
+
+        /* CTA */
+
+        .cta {
+            margin: 0 12px 16px;
+            padding: 17px;
+            min-height: 130px;
+            border-radius: 10px;
+            color: white;
+            background:
+                linear-gradient(
+                    rgba(23, 91, 55, 0.9),
+                    rgba(18, 77, 46, 0.95)
+                ),
+                url("https://images.unsplash.com/photo-1538485399081-7c897d3b2f9f")
+                center/cover;
+        }
+
+        .cta small {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta h2 {
+            font-size: 17px;
+            line-height: 1.1;
+            margin: 5px 0;
+        }
+
+        .cta p {
+            font-size: 9px;
+            color: #dbe9df;
+            margin-bottom: 10px;
+        }
+
+        .cta a {
+            display: inline-block;
+            background: white;
+            color: #236a45;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .cta a:hover {
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: white;
+            padding: 15px;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .footer-logo {
+            font-weight: bold;
+            font-size: 15px;
+            color: #197346;
+        }
+
+        .footer-text {
+            color: #8a928d;
+            font-size: 8px;
+            margin-top: 4px;
+        }
+
+        .contacts {
+            font-size: 8px;
+            color: #606b64;
+            line-height: 1.8;
+        }
+
+        .contacts a {
+            color: #197346;
+            text-decoration: none;
+        }
+
+        .copyright {
+            margin-top: 13px;
+            color: #a1a6a3;
+            font-size: 7px;
+        }
+
+        /* MODAL */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 390px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            animation: showModal 0.2s ease;
+        }
+
+        @keyframes showModal {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 13px;
+            border: none;
+            background: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .modal-box h2 {
+            font-size: 20px;
+            color: #183b2a;
+            margin-bottom: 8px;
+            padding-right: 30px;
+        }
+
+        .modal-box p {
+            color: #758077;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 9px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .form-input:focus {
+            border-color: #25784b;
+        }
+
+        .submit-button {
+            width: 100%;
+            border: none;
+            background: #20764a;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        .submit-button:hover {
+            background: #155d38;
+        }
+
+        .call-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            background: #eef6f1;
+            color: #20764a;
+            padding: 11px;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* DESKTOP */
+
+        @media (min-width: 700px) {
+
+            body {
+                padding: 30px 0;
+            }
+
+            .site {
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .menu-panel {
+                right: calc(50% - 205px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="site">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            NomadTrip
+        </div>
+
+        <div class="header-right">
+
+            <button class="choose" onclick="scrollToTrips()">
+                Выбрать тур
+            </button>
+
+            <div class="menu" onclick="toggleMenu()">
+                ☰
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- MENU -->
+
+    <nav class="menu-panel" id="menuPanel">
+
+        <a href="#home" onclick="closeMenu()">
+            🏠 Главная
+        </a>
+
+        <a href="#trips" onclick="closeMenu()">
+            🏔️ Туры
+        </a>
+
+        <a href="#advantages" onclick="closeMenu()">
+            ⭐ О нас
+        </a>
+
+        <a href="#contacts" onclick="closeMenu()">
+            📞 Контакты
+        </a>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero" id="home">
+
+        <img
+            src="https://images.unsplash.com/photo-1538485399081-7c897d3b2f9f"
+            alt="Горы Кыргызстана"
+        >
+
+        <div class="hero-content">
+
+            <div class="hero-small">
+                Путешествия по Кыргызстану
+            </div>
+
+            <h1>
+                Горы, озёра<br>
+                и впечатления,<br>
+                которые запомнятся
+            </h1>
+
+            <p>
+                Небольшие группы, готовые маршруты
+                и самые красивые места Кыргызстана.
+            </p>
+
+            <a href="#trips" class="hero-button">
+                Смотреть туры →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- TRIPS -->
+
+    <section class="section" id="trips">
+
+        <h2 class="section-title">
+            Выбери своё путешествие
+        </h2>
+
+        <p class="section-subtitle">
+            Нажми на любой тур, чтобы узнать подробнее.
+        </p>
+
+
+        <div class="trip" onclick="openTrip(
+            'Иссык-Куль',
+            'Путешествие на 3 дня к знаменитому озеру Иссык-Куль. Вас ждут красивые виды, прогулки и незабываемые закаты.',
+            'от 8 500 сом'
+        )">
+
+            <img
+                src="https://images.unsplash.com/photo-1538485399081-7c897d3b2f9f"
+                alt="Иссык-Куль"
+            >
+
+            <div class="trip-info">
+
+                <h3>Иссык-Куль</h3>
+
+                <p>
+                    3 дня • озеро, прогулки
+                    и красивые закаты
+                </p>
+
+                <div class="price">
+                    от 8 500 сом
+                </div>
+
+            </div>
+
+            <div class="trip-arrow">
+                →
+            </div>
+
+        </div>
+
+
+        <div class="trip" onclick="openTrip(
+            'Ала-Арча',
+            'Однодневная поездка в национальный парк Ала-Арча. Горные пейзажи, свежий воздух и прогулка по красивому маршруту.',
+            'от 2 500 сом'
+        )">
+
+            <img
+                src="https://images.unsplash.com/photo-1500534623283-312aade485b7"
+                alt="Ала-Арча"
+            >
+
+            <div class="trip-info">
+
+                <h3>Ала-Арча</h3>
+
+                <p>
+                    Однодневный маршрут
+                    среди гор и природы
+                </p>
+
+                <div class="price">
+                    от 2 500 сом
+                </div>
+
+            </div>
+
+            <div class="trip-arrow">
+                →
+            </div>
+
+        </div>
+
+
+        <div class="trip" onclick="openTrip(
+            'Сон-Куль',
+            'Поездка к высокогорному озеру Сон-Куль. Юрты, горы, природа и настоящее ощущение свободы.',
+            'от 7 000 сом'
+        )">
+
+            <img
+                src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b"
+                alt="Сон-Куль"
+            >
+
+            <div class="trip-info">
+
+                <h3>Сон-Куль</h3>
+
+                <p>
+                    Юрты, горы и настоящее
+                    ощущение свободы
+                </p>
+
+                <div class="price">
+                    от 7 000 сом
+                </div>
+
+            </div>
+
+            <div class="trip-arrow">
+                →
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ADVANTAGES -->
+
+    <section class="advantages" id="advantages">
+
+        <h2 class="section-title">
+            Мы берём организацию<br>
+            на себя
+        </h2>
+
+        <p class="section-subtitle">
+            Ты выбираешь маршрут — мы помогаем
+            с транспортом, проживанием и организацией.
+        </p>
+
+
+        <div class="advantage">
+
+            <div class="advantage-icon">
+                🏔️
+            </div>
+
+            <div>
+
+                <h3>
+                    Проверенные маршруты
+                </h3>
+
+                <p>
+                    Только красивые и безопасные места.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="advantage">
+
+            <div class="advantage-icon">
+                🥾
+            </div>
+
+            <div>
+
+                <h3>
+                    Небольшие группы
+                </h3>
+
+                <p>
+                    Комфортное путешествие вместе.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="advantage">
+
+            <div class="advantage-icon">
+                🛡️
+            </div>
+
+            <div>
+
+                <h3>
+                    Поддержка во время поездки
+                </h3>
+
+                <p>
+                    Мы всегда на связи.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat">
+                <strong>12+</strong>
+                <span>
+                    авторских<br>
+                    маршрутов
+                </span>
+            </div>
+
+            <div class="stat">
+                <strong>4.9</strong>
+                <span class="stars">
+                    ★★★★★
+                </span>
+                <span>
+                    рейтинг наших туров
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+
+    <section class="cta">
+
+        <small>
+            Следующее приключение
+        </small>
+
+        <h2>
+            Готов отправиться в путь?
+        </h2>
+
+        <p>
+            Напиши нам — поможем подобрать
+            подходящий маршрут.
+        </p>
+
+        <a href="tel:+996507588832">
+            📞 Связаться с нами →
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer id="contacts">
+
+        <div class="footer-top">
+
+            <div>
+
+                <div class="footer-logo">
+                    NomadTrip
+                </div>
+
+                <div class="footer-text">
+                    Путешествия по красивым
+                    местам Кыргызстана.
+                </div>
+
+            </div>
+
+            <div class="contacts">
+
+                📧 nomadtrip@mail.com<br>
+
+                📞
+                <a href="tel:+996507588832">
+                    +996 507 588 832
+                </a>
+                <br>
+
+                📱
+                <a href="https://www.instagram.com/" target="_blank">
+                    Instagram
+                </a>
+                <br>
+
+                ✈️
+                <a href="https://t.me/" target="_blank">
+                    Telegram
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 NomadTrip. Все права защищены.
+        </div>
+
+    </footer>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="tripModal">
+
+    <div class="modal-box">
+
+        <button class="close" onclick="closeModal()">
+            ×
+        </button>
+
+        <h2 id="modalTitle">
+            Тур
+        </h2>
+
+        <p id="modalText">
+            Описание тура
+        </p>
+
+        <strong id="modalPrice">
+            Цена
+        </strong>
+
+        <br><br>
+
+        <input
+            class="form-input"
+            id="name"
+            type="text"
+            placeholder="Ваше имя"
+        >
+
+        <input
+            class="form-input"
+            id="phone"
+            type="tel"
+            placeholder="Ваш номер телефона"
+        >
+
+        <button
+            class="submit-button"
+            onclick="sendRequest()"
+        >
+            Отправить заявку
+        </button>
+
+        <a
+            class="call-button"
+            href="tel:+996507588832"
+        >
+            📞 Позвонить: +996 507 588 832
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* Открыть меню */
+
+    function toggleMenu() {
+
+        const menu = document.getElementById("menuPanel");
+
+        menu.classList.toggle("active");
+
+    }
+
+
+    /* Закрыть меню */
+
+    function closeMenu() {
+
+        document
+            .getElementById("menuPanel")
+            .classList.remove("active");
+
+    }
+
+
+    /* Прокрутка к турам */
+
+    function scrollToTrips() {
+
+        document
+            .getElementById("trips")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    }
+
+
+    /* Открытие информации о туре */
+
+    function openTrip(title, text, price) {
+
+        document.getElementById("modalTitle").textContent = title;
+
+        document.getElementById("modalText").textContent = text;
+
+        document.getElementById("modalPrice").textContent = price;
+
+        document
+            .getElementById("tripModal")
+            .classList.add("active");
+
+    }
+
+
+    /* Закрытие окна */
+
+    function closeModal() {
+
+        document
+            .getElementById("tripModal")
+            .classList.remove("active");
+
+    }
+
+
+    /* Отправка заявки */
+
+    function sendRequest() {
+
+        const name =
+            document.getElementById("name").value.trim();
+
+        const phone =
+            document.getElementById("phone").value.trim();
+
+        const title =
+            document.getElementById("modalTitle").textContent;
+
+
+        if (name === "" || phone === "") {
+
+            alert("Пожалуйста, заполните имя и номер телефона.");
+
+            return;
+
+        }
+
+
+        alert(
+            "Спасибо, " + name +
+            "!\n\n" +
+            "Ваша заявка на тур «" +
+            title +
+            "» принята.\n\n" +
+            "Мы свяжемся с вами по номеру " +
+            phone + "."
+        );
+
+
+        document.getElementById("name").value = "";
+
+        document.getElementById("phone").value = "";
+
+        closeModal();
+
+    }
+
+
+    /* Закрытие модального окна при клике снаружи */
+
+    document
+        .getElementById("tripModal")
+        .addEventListener("click", function(event) {
+
+            if (event.target === this) {
+                closeModal();
+            }
+
+        });
+
+</script>
+
+</body>
+</html>
